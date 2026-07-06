@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Москва 8–11 июля</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --glow: #00d4ff;
+            --glow-dim: #0077aa;
+            --bg: #0a0a0f;
+            --card-bg: rgba(255, 255, 255, 0.04);
+            --card-border: rgba(255, 255, 255, 0.08);
+            --text: #e8e8f0;
+            --text-dim: #8888aa;
+            --accent: #ff6b35;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* ── Hero ── */
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(0, 212, 255, 0.08) 0%, transparent 70%);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 8vw, 5rem);
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            line-height: 1.1;
+            margin-bottom: 0.5rem;
+        }
+
+        .hero h1 span {
+            background: linear-gradient(135deg, var(--glow), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero .subtitle {
+            font-size: clamp(1rem, 3vw, 1.5rem);
+            font-weight: 300;
+            color: var(--text-dim);
+            margin-bottom: 2rem;
+        }
+
+        .hero .dates {
+            font-size: 0.9rem;
+            color: var(--glow);
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            margin-bottom: 3rem;
+        }
+
+        .scroll-hint {
+            position: absolute;
+            bottom: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            animation: bounce 2s infinite;
+        }
+
+        .scroll-hint span {
+            font-size: 0.75rem;
+            color: var(--text-dim);
+            letter-spacing: 0.1em;
+        }
+
+        .scroll-hint .arrow {
+            width: 20px;
+            height: 20px;
+            border-right: 2px solid var(--glow);
+            border-bottom: 2px solid var(--glow);
+            transform: rotate(45deg);
+            opacity: 0.6;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(10px); }
+        }
+
+        /* ── Timeline Section ── */
+        .timeline-section {
+            position: relative;
+            padding: 4rem 0 6rem;
+        }
+
+        .day-header {
+            text-align: center;
+            padding: 3rem 1rem 2rem;
+            position: relative;
+        }
+
+        .day-header h2 {
+            font-size: clamp(1.5rem, 5vw, 2.5rem);
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+        }
+
+        .day-header .day-label {
+            font-size: 0.8rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--glow);
+            margin-bottom: 0.5rem;
+        }
+
+        .day-header .day-desc {
+            color: var(--text-dim);
+            font-weight: 300;
+            font-size: 1rem;
+        }
+
+        /* ── Timeline Container ── */
+        .timeline {
+            position: relative;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        /* The glowing line */
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 30px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(
+                to bottom,
+                transparent 0%,
+                var(--glow-dim) 5%,
+                var(--glow) 50%,
+                var(--glow) 95%,
+                transparent 100%
+            );
+            box-shadow:
+                0 0 8px var(--glow),
+                0 0 20px rgba(0, 212, 255, 0.3),
+                0 0 40px rgba(0, 212, 255, 0.1);
+            z-index: 1;
+        }
+
+        /* Glowing end cap */
+        .timeline::after {
+            content: '';
+            position: absolute;
+            left: 24px;
+            bottom: 0;
+            width: 14px;
+            height: 14px;
+            background: var(--glow);
+            border-radius: 50%;
+            box-shadow:
+                0 0 10px var(--glow),
+                0 0 30px var(--glow),
+                0 0 60px rgba(0, 212, 255, 0.4);
+            z-index: 2;
+            animation: pulse-end 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse-end {
+            0%, 100% {
+                box-shadow:
+                    0 0 10px var(--glow),
+                    0 0 30px var(--glow),
+                    0 0 60px rgba(0, 212, 255, 0.4);
+            }
+            50% {
+                box-shadow:
+                    0 0 15px var(--glow),
+                    0 0 40px var(--glow),
+                    0 0 80px rgba(0, 212, 255, 0.6);
+            }
+        }
+
+        /* ── Timeline Item ── */
+        .timeline-item {
+            position: relative;
+            padding-left: 70px;
+            margin-bottom: 3rem;
+            opacity: 0;
+            transform: translateX(60px);
+            transition: opacity 0.7s ease, transform 0.7s ease;
+        }
+
+        .timeline-item.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .timeline-item:nth-child(even) {
+            transform: translateX(-60px);
+        }
+
+        .timeline-item:nth-child(even).visible {
+            transform: translateX(0);
+        }
+
+        /* Node on the line */
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: 23px;
+            top: 24px;
+            width: 16px;
+            height: 16px;
+            background: var(--bg);
+            border: 2px solid var(--glow);
+            border-radius: 50%;
+            z-index: 3;
+            box-shadow: 0 0 10px rgba(0, 212, 255, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .timeline-item.visible::before {
+            background: var(--glow);
+            box-shadow:
+                0 0 10px var(--glow),
+                0 0 20px rgba(0, 212, 255, 0.3);
+        }
+
+        /* ── Card ── */
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 40px rgba(0, 212, 255, 0.1);
+            border-color: rgba(0, 212, 255, 0.15);
+        }
+
+        .card-img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-bottom: 1px solid var(--card-border);
+        }
+
+        .card-body {
+            padding: 1.25rem;
+        }
+
+        .card-time {
+            font-size: 0.75rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--glow);
+            margin-bottom: 0.4rem;
+            font-weight: 600;
+        }
+
+        .card-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            line-height: 1.3;
+        }
+
+        .card-desc {
+            font-size: 0.9rem;
+            color: var(--text-dim);
+            line-height: 1.6;
+            font-weight: 300;
+        }
+
+        .card-desc ul {
+            list-style: none;
+            padding: 0;
+            margin-top: 0.5rem;
+        }
+
+        .card-desc ul li {
+            padding: 0.2rem 0;
+            padding-left: 1rem;
+            position: relative;
+        }
+
+        .card-desc ul li::before {
+            content: '›';
+            position: absolute;
+            left: 0;
+            color: var(--glow);
+            font-weight: 600;
+        }
+
+        .card-tag {
+            display: inline-block;
+            padding: 0.2rem 0.6rem;
+            background: rgba(0, 212, 255, 0.1);
+            color: var(--glow);
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            margin-top: 0.75rem;
+            text-transform: uppercase;
+        }
+
+        /* ── Transport badge ── */
+        .transport {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.6rem 1rem;
+            margin-left: 70px;
+            margin-bottom: 2rem;
+            background: rgba(255, 107, 53, 0.08);
+            border-left: 3px solid var(--accent);
+            border-radius: 0 8px 8px 0;
+            font-size: 0.85rem;
+            color: var(--accent);
+            opacity: 0;
+            transform: translateX(40px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .transport.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .transport .icon {
+            font-size: 1.2rem;
+        }
+
+        /* ── Footer ── */
+        .footer {
+            text-align: center;
+            padding: 4rem 1rem;
+            color: var(--text-dim);
+            font-size: 0.8rem;
+        }
+
+        .footer .route-summary {
+            max-width: 600px;
+            margin: 0 auto 2rem;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.5rem;
+            font-size: 0.75rem;
+        }
+
+        .footer .route-summary span {
+            padding: 0.3rem 0.8rem;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 20px;
+        }
+
+        .footer .route-summary .arrow {
+            display: flex;
+            align-items: center;
+            color: var(--glow);
+            border: none;
+            background: none;
+            padding: 0;
+        }
+
+        /* ── Mobile ── */
+        @media (max-width: 768px) {
+            .timeline::before {
+                left: 20px;
+            }
+
+            .timeline::after {
+                left: 14px;
+                width: 12px;
+                height: 12px;
+            }
+
+            .timeline-item {
+                padding-left: 50px;
+                margin-bottom: 2rem;
+            }
+
+            .timeline-item::before {
+                left: 13px;
+                width: 14px;
+                height: 14px;
+                top: 20px;
+            }
+
+            .transport {
+                margin-left: 50px;
+            }
+
+            .card-img {
+                height: auto;
+            }
+
+            .card-body {
+                padding: 1rem;
+            }
+
+            .card-title {
+                font-size: 1rem;
+            }
+
+            .card-desc {
+                font-size: 0.85rem;
+            }
+
+            .hero h1 {
+                padding: 0 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .timeline::before {
+                left: 16px;
+            }
+
+            .timeline::after {
+                left: 10px;
+                width: 10px;
+                height: 10px;
+            }
+
+            .timeline-item {
+                padding-left: 42px;
+            }
+
+            .timeline-item::before {
+                left: 9px;
+                width: 12px;
+                height: 12px;
+            }
+
+            .transport {
+                margin-left: 42px;
+                font-size: 0.8rem;
+                padding: 0.5rem 0.8rem;
+            }
+
+            .card-img {
+                height: auto;
+            }
+        }
+
+        /* ── Smooth scrollbar ── */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(0, 212, 255, 0.3);
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(0, 212, 255, 0.5);
+        }
+    </style>
+</head>
+<body>
+
+<!-- ═══ HERO ═══ -->
+<section class="hero">
+    <div class="dates">Воронеж → Москва</div>
+    <h1><span>Москва</span></h1>
+    <p class="subtitle">8 – 11 июля 2025</p>
+    <div class="scroll-hint">
+        <span>листай вниз</span>
+        <div class="arrow"></div>
+    </div>
+</section>
+
+<!-- ═══ DAY 0 — 8 июля ═══ -->
+<section class="timeline-section">
+    <div class="day-header">
+        <div class="day-label">Среда, 8 июля</div>
+        <h2>Воронеж → Москва</h2>
+        <p class="day-desc">Ночной поезд, прибытие утром</p>
+    </div>
+    <div class="timeline">
+        <div class="timeline-item">
+            <div class="card">
+                <img class="card-img" src="image/1.jpg" alt="Поезд">
+                <div class="card-body">
+                    <div class="card-time">22:53 — Отправление</div>
+                    <div class="card-title">Воронеж, поезд на Москву</div>
+                    <div class="card-desc">
+                        Ночной поезд. Зарядить телефоны, скачать билеты офлайн, взять воду и перекус.
+                        <ul>
+                            <li>Вещи для Патриот — отдельно</li>
+                            <li>Не искать ночью</li>
+                        </ul>
+                    </div>
+                    <span class="card-tag">🚂 Поезд</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══ DAY 1 — 9 июля ═══ -->
+<section class="timeline-section">
+    <div class="day-header">
+        <div class="day-label">Четверг, 9 июля</div>
+        <h2>Парк «Патриот»</h2>
+        <p class="day-desc">Главный храм Вооружённых Сил и музейный комплекс</p>
+    </div>
+    <div class="timeline">
+        <div class="timeline-item">
+            <div class="card">
+                <img class="card-img" src="image/2.jpg" alt="Павелецкий вокзал">
+                <div class="card-body">
+                    <div class="card-time">09:40 — Прибытие</div>
+                    <div class="card-title">Павелецкий вокзал</div>
+                    <div class="card-desc">
+                        Прибытие в Москву. Выход с вокзала и сразу такси в Кубинку — 65–75 км, примерно 1–1,5 часа.
+                    </div>
+                    <span class="card-tag">🚕 Такси</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="transport">
+            <span class="icon">🚕</span>
+            <span>Такси Павелецкий → Кубинка · ~1–1,5 ч · 65–75 км</span>
+        </div>
+
+        <div class="timeline-item">
+            <div class="card">
+                <img class="card-img" src="image/3.jpeg" alt="Храм ВС">
+                <div class="card-body">
+                    <div class="card-time">12:00 – 18:00</div>
+                    <div class="card-title">Главный храм Вооружённых Сил</div>
+                    <div class="card-desc">
+                        Один из крупнейших храмовых комплексов России с уникальной архитектурой и мозаиками.
+                        <ul>
+                            <li>Военная символика</li>
+                            <li>Интерактивные экспозиции</li>
+                        </ul>
+                    </div>
+                    <span class="card-tag">⛪ Храм</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <div class="card">
+                <img class="card-img" src="image/4.jpg" alt="Дорога памяти">
+                <div class="card-body">
+                    <div class="card-time">В течение дня</div>
+                    <div class="card-title">«Дорога памяти» — 1418 метров</div>
+                    <div class="card-desc">
+                        Галерея с фотографиями участников ВОВ и семейными историями.
+                        <ul>
+                            <li>1418 метров галереи</li>
+                            <li>Семейные истории</li>
+                            <li>Интерактивные залы</li>
+                        </ul>
+                    </div>
+                    <span class="card-tag">🏛 Музей</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <div class="card">
+                <img class="card-img" src="image/5.webp" alt="Парк Патриот">
+                <div class="card-body">
+                    <div class="card-time">Днём</div>
+                    <div class="card-title">Парк «Патриот»</div>
+                    <div class="card-desc">
+                        Военная техника, открытые площадки и прогулочная зона. Вечером — ужин и отдых в отеле.
+                    </div>
+                    <span class="card-tag">🌳 Парк</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <div class="card">
+                <img class="card-img" src="image/6.jpg" alt="ПСБ Патриот">
+                <div class="card-body">
+                    <div class="card-time">Ночь</div>
+                    <div class="card-title">ПСБ «Патриот»</div>
+                    <div class="card-desc">
+                        Ночёвка на территории парка. Завтрак, сборы и выезд в сторону Москвы.
+                    </div>
+                    <span class="card-tag">🏨 Отель</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══ DAY 2 — 10 июля ═══ -->
+<section class="timeline-section">
+    <div class="day-header">
+        <div class="day-label">Пятница, 10 июля</div>
+        <h2>Лужники → Воробьёвы горы → Сити</h2>
+        <p class="day-desc">Главный день — запад Москвы, река и небоскрёбы</p>
+    </div>
+    <div class="timeline">
+        <div class="transport">
+            <span class="icon">🚕</span>
+            <span>Такси Кубинка → Моросейка 2/15 · ~1–1,5 ч</span>
+        </div>
+
+        <div class="timeline-item">
+            <div class="card">
+                <img class="card-img" src="image/7.jpg" alt="Моросейка">
+                <div class="card-body">
+                    <div class="card-time">11:00</div>
+                    <div class="card-title">Моросейка 2/15 — Заселение</div>
+                    <div class="card-desc">
+                        Прибытие в отель в центре Москвы. Оставить вещи, передохнуть и выходим на маршрут.
+                    </div>
+                    <span class="card-tag">🏨 Отель</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="transport">
+            <span class="icon">🚕</span>
+            <span>Такси Моросейка → Лужники · 25–40 мин</span>
+        </div>
+
+        <div class="timeline-item">
+            <div class="card">
+                <img class="card-img" src="image/8.jpg" alt="Лужники">
+                <div class="card-body">
+                    <div class="card-time">12:40 – 14:00</div>
+                    <div class="card-title">Зиплайн в Лужниках 🪂</div>
+                    <div class="card-desc">
+                        Полёт на зиплайне над стадионом. Рядом — Воробьёвы горы, не надо возвращаться через всю Москву.
+                    </div>
+                    <span class="card-tag">🪂 Активность</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <div class="card">
+                <img class="card-img" src="image/9.jpg" alt="Воробьёвы горы">
+                <div class="card-body">
+                    <div class="card-time">14:00 – 14:30</div>
+                    <div class="card-title">Смотровая — Воробьёвы горы</div>
+                    <div class="card-desc">
+                        Лучший вид на Москву: Москва-Сити, Лужники, Москва-река и центр города.
+                        <ul>
+                            <li>Москва-Сити</li>
+                            <li>Лужники</li>
+                            <li>Москва-река</li>
+                            <li>Центр города</li>
+                        </ul>
+                    </div>
+                    <span class="card-tag">📸 Вид</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <div class="card">
+                <img class="card-img" src="image/10.jpg" alt="Теплоход">
+                <div class="card-body">
+                    <div class="card-time">15:00 – 16:30</div>
+                    <div class="card-title">Теплоход «Флагман» 🚢</div>
+                    <div class="card-desc">
+                        Маршрут: Воробьёвы горы → Китай-город. Идеально — начинаем на западе, заканчиваем у отеля.
+                        <ul>
+                            <li>Лужники</li>
+                            <li>Нескучный сад</li>
+                            <li>Парк Горького</li>
+                            <li>Храм Христа Спасителя</li>
+                            <li>Кремль и Зарядье</li>
+                        </ul>
+                    </div>
+                    <span class="card-tag">🚢 Теплоход</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <div class="card">
+                <img class="card-img" src="image/11.jpg" alt="Отдых">
+                <div class="card-body">
+                    <div class="card-time">16:30 – 18:30</div>
+                    <div class="card-title">Отдых в отеле</div>
+                    <div class="card-desc">
+                        Возвращение на Моросейку. Отдых перед вечерней программой.
+                    </div>
+                    <span class="card-tag">🏨 Отдых</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="transport">
+            <span class="icon">🚕</span>
+            <span>Такси Моросейка → Москва-Сити</span>
+        </div>
+
+        <div class="timeline-item">
+            <div class="card">
+                <img class="card-img" src="image/12.jpg" alt="Москва-Сити">
+                <div class="card-body">
+                    <div class="card-time">18:30 – 21:00</div>
+                    <div class="card-title">PANORAMA360 — Башня Федерация</div>
+                    <div class="card-desc">
+                        Лучшее время — вечер. Дневная Москва, закат и включение подсветки города.
+                        <ul>
+                            <li>Смотровая на 89-м этаже</li>
+                            <li>Закат над Москвой</li>
+                            <li>Ужин в Сити</li>
+                        </ul>
+                    </div>
+                    <span class="card-tag">🌆 Вид</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <div class="card">
+                <img class="card-img" src="image/13.jpg" alt="Моросейка ночь">
+                <div class="card-body">
+                    <div class="card-time">Ночь</div>
+                    <div class="card-title">Моросейка 2/15</div>
+                    <div class="card-desc">
+                        Возвращение в отель. Завтра — последний день.
+                    </div>
+                    <span class="card-tag">🏨 Отель</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══ DAY 3 — 11 июля ═══ -->
+<section class="timeline-section">
+    <div class="day-header">
+        <div class="day-label">Суббота, 11 июля</div>
+        <h2>Центр Москвы → Домой</h2>
+        <p class="day-desc">Храм, Красная площадь и поезд в Воронеж</p>
+    </div>
+    <div class="timeline">
+        <div class="timeline-item">
+            <div class="card">
+                <img class="card-img" src="image/14.jpg" alt="ХХС">
+                <div class="card-body">
+                    <div class="card-time">08:30 – 10:00</div>
+                    <div class="card-title">Храм Христа Спасителя</div>
+                    <div class="card-desc">
+                        Утром — меньше людей, спокойнее, красивый свет для фото.
+                        <ul>
+                            <li>Патриарший мост</li>
+                            <li>Вид на Кремль</li>
+                            <li>Набережная</li>
+                        </ul>
+                    </div>
+                    <span class="card-tag">⛪ Храм</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <div class="card">
+                <img class="card-img" src="image/15.jpg" alt="Красная площадь">
+                <div class="card-body">
+                    <div class="card-time">10:00 – 11:30</div>
+                    <div class="card-title">Красная площадь и ГУМ</div>
+                    <div class="card-desc">
+                        Компактный маршрут по центру:
+                        <ul>
+                            <li>ХХС → Патриарший мост</li>
+                            <li>Александровский сад</li>
+                            <li>Красная площадь</li>
+                            <li>ГУМ</li>
+                        </ul>
+                    </div>
+                    <span class="card-tag">🏛 Центр</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <div class="card">
+                <img class="card-img" src="image/16.jpg" alt="Обед">
+                <div class="card-body">
+                    <div class="card-time">11:30 – 12:30</div>
+                    <div class="card-title">Обед в центре</div>
+                    <div class="card-desc">
+                        Не уходить далеко — обед рядом с площадью, потом спокойно на вокзал.
+                    </div>
+                    <span class="card-tag">🍽 Обед</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="transport">
+            <span class="icon">🚕</span>
+            <span>Такси центр → Казанский вокзал</span>
+        </div>
+
+        <div class="timeline-item">
+            <div class="card">
+                <img class="card-img" src="image/17.webp" alt="Вокзал">
+                <div class="card-body">
+                    <div class="card-time">13:45 – 16:45</div>
+                    <div class="card-title">Бизнес-зал Казанского</div>
+                    <div class="card-desc">
+                        Запас 3 часа: пройти контроль, поесть, зарядить устройства и отдохнуть.
+                    </div>
+                    <span class="card-tag">🛋 Ожидание</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <div class="card">
+                <img class="card-img" src="image/18.jpg" alt="Поезд домой">
+                <div class="card-body">
+                    <div class="card-time">16:45</div>
+                    <div class="card-title">Поезд Москва → Воронеж 🚂</div>
+                    <div class="card-desc">
+                        Домой! Конец отличного путешествия.
+                    </div>
+                    <span class="card-tag">🚂 Поезд</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer class="footer">
+    <div class="route-summary">
+        <span>Воронеж</span>
+        <span class="arrow">→</span>
+        <span>Кубинка</span>
+        <span class="arrow">→</span>
+        <span>Лужники</span>
+        <span class="arrow">→</span>
+        <span>Воробьёвы горы</span>
+        <span class="arrow">→</span>
+        <span>Москва-Сити</span>
+        <span class="arrow">→</span>
+        <span>Красная площадь</span>
+        <span class="arrow">→</span>
+        <span>Воронеж</span>
+    </div>
+    <p>Москва · 8–11 июля 2025</p>
+</footer>
+
+<script>
+    // Intersection Observer for scroll animations
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+            }
+        });
+    }, {
+        threshold: 0.15,
+        rootMargin: '0px 0px -50px 0px'
+    });
+
+    document.querySelectorAll('.timeline-item, .transport').forEach(el => {
+        observer.observe(el);
+    });
+
+    // Parallax sway effect on scroll
+    let ticking = false;
+    window.addEventListener('scroll', () => {
+        if (!ticking) {
+            requestAnimationFrame(() => {
+                const scrollY = window.scrollY;
+                document.querySelectorAll('.timeline-item').forEach((item, i) => {
+                    const rect = item.getBoundingClientRect();
+                    const centerOffset = (rect.top + rect.height / 2 - window.innerHeight / 2) / window.innerHeight;
+                    const sway = Math.sin(centerOffset * Math.PI) * 20 * (i % 2 === 0 ? 1 : -1);
+                    if (item.classList.contains('visible')) {
+                        item.style.transform = `translateX(${sway}px)`;
+                    }
+                });
+                ticking = false;
+            });
+            ticking = true;
+        }
+    });
+</script>
+</body>
+</html>
